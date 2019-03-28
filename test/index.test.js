@@ -1,7 +1,8 @@
 /* global it,describe */
 /* eslint-disable no-underscore-dangle, no-unused-expressions */
 import chai from 'chai';
-import moment from '../dist/index';
+import moment from '../src/index';
+import oldmoment from './old';
 
 const { expect } = chai;
 
@@ -200,6 +201,63 @@ describe('Moment instance "subtract" method', () => {
   });
   it('should be true when subtracting 1 hour', () => {
     expect(momentInstanceAddHour._date.getHours()).to.be.equal(momentInstance3._date.getHours());
+  });
+});
+describe('Moment instance "isSame" method', () => {
+  const momentInstance = moment('2019-01-01', 'YYYY-MM-DD');
+  const momentInstance2 = moment('2019-01-01', 'YYYY-MM-DD');
+  const momentInstance3 = moment('2019-01-02', 'YYYY-MM-DD');
+  const momentInstance4 = moment('2019-01-01 00:00:00', 'YYYY-MM-DD');
+  it('should be same', () => {
+    expect(momentInstance.isSame(momentInstance2)).to.be.true;
+    expect(momentInstance2.isSame(momentInstance)).to.be.true;
+    expect(momentInstance.isSame(momentInstance4)).to.be.true;
+  });
+  it('should not be same', () => {
+    expect(momentInstance.isSame(momentInstance3)).to.be.false;
+    expect(momentInstance2.isSame(momentInstance4)).to.be.true;
+  });
+});
+describe('Moment instance getters', () => {
+  const momentInstance1 = moment('2019-01-31 12:00:00', 'YYYY-MM-DD hh:mm:ss');
+  const momentInstance2 = moment('2018-01-31 12:00:00', 'YYYY-MM-DD hh:mm:ss');
+  const momentInstance3 = moment('2019-03-10 12:34:12', 'YYYY-MM-DD hh:mm:ss');
+  const momentInstance4 = moment('2019-10-09 12:00:00', 'YYYY-MM-DD hh:mm:ss');
+  const momentInstance5 = moment();
+  const oldMomentInstance1 = oldmoment('2019-01-31 12:00:00', 'YYYY-MM-DD hh:mm:ss');
+  const oldMomentInstance2 = oldmoment('2018-01-31 12:00:00', 'YYYY-MM-DD hh:mm:ss');
+  const oldMomentInstance3 = oldmoment('2019-03-10 12:34:12', 'YYYY-MM-DD hh:mm:ss');
+  const oldMomentInstance4 = oldmoment('2019-10-09 12:00:00', 'YYYY-MM-DD hh:mm:ss');
+  const oldMomentInstance5 = oldmoment();
+  describe('get date', () => {
+    it('values validations', () => {
+      expect(momentInstance1.date()).to.be.equal(31);
+      expect(momentInstance2.date()).to.be.equal(31);
+      expect(momentInstance3.date()).to.be.equal(10);
+      expect(momentInstance4.date()).to.be.equal(9);
+    });
+    it('compare with old momentmini implementation', () => {
+      expect(momentInstance1.date()).to.be.equal(oldMomentInstance1.date());
+      expect(momentInstance2.date()).to.be.equal(oldMomentInstance2.date());
+      expect(momentInstance3.date()).to.be.equal(oldMomentInstance3.date());
+      expect(momentInstance4.date()).to.be.equal(oldMomentInstance4.date());
+      expect(momentInstance5.date()).to.be.equal(oldMomentInstance5.date());
+    });
+  });
+  describe('get month', () => {
+    it('values validations', () => {
+      expect(momentInstance1.month()).to.be.equal(0);
+      expect(momentInstance2.month()).to.be.equal(0);
+      expect(momentInstance3.month()).to.be.equal(2);
+      expect(momentInstance4.month()).to.be.equal(9);
+    });
+    it('compare with old momentmini implementation', () => {
+      expect(momentInstance1.month()).to.be.equal(oldMomentInstance1.month());
+      expect(momentInstance2.month()).to.be.equal(oldMomentInstance2.month());
+      expect(momentInstance3.month()).to.be.equal(oldMomentInstance3.month());
+      expect(momentInstance4.month()).to.be.equal(oldMomentInstance4.month());
+      expect(momentInstance5.month()).to.be.equal(oldMomentInstance5.month());
+    });
   });
 });
 describe('Moment instance "isBefore" method', () => {

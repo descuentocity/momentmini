@@ -9,6 +9,19 @@
 
 import fecha from 'fecha';
 
+fecha.i18n = {
+  dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'],
+  dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+  monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+  monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+  amPm: ['am', 'pm'],
+  DoFn: (D) => {
+    const nDay = parseInt(D.toString().slice(0, -1), 10);
+    const suffix = ['', 'ero', 'do', 'ero'];
+    return suffix[nDay] || '';
+  },
+};
+
 const timeStrategyAdd = {
   seconds: (d, n) => d.setSeconds(d.getSeconds() + n),
   minutes: (d, n) => d.setMinutes(d.getMinutes() + n),
@@ -33,7 +46,6 @@ function buildDate(date) {
       const valueOfObj = obj.valueOf();
       const valueOfSelf = this._date.valueOf();
       const differenceMilliseconds = Math.abs(valueOfSelf - valueOfObj);
-
       const divideBy = {
         week: 604800000,
         days: 86400000,
@@ -70,6 +82,36 @@ function buildDate(date) {
     },
     subtract(qty, timePeriod = 'days') {
       return this.add(qty * -1, timePeriod);
+    },
+    isSame(m, v) {
+      if (!v) {
+        return momentMini(m).toNumber() === this.toNumber();
+      }
+      return momentMini(m)[v]() === this[v]();
+    },
+    toString() {
+      return this.toNumber().toString();
+    },
+    toNumber() {
+      if (!this.isValid()) {
+        return NaN;
+      }
+      return this.numberDate;
+    },
+    month() {
+      return this._date.getMonth();
+    },
+    day() {
+      return this._date.getDay();
+    },
+    date() {
+      return this._date.getDate();
+    },
+    getDateInt() {
+      if (!this.isValid()) {
+        return NaN;
+      }
+      return parseInt(this.format('YYYYMMDD'), 10);
     },
     valueOf() {
       return this.numberDate;

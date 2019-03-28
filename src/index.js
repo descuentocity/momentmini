@@ -9,6 +9,15 @@
 
 import fecha from 'fecha';
 
+const timeStrategyAdd = {
+  seconds: (d, n) => d.setSeconds(d.getSeconds() + n),
+  minutes: (d, n) => d.setMinutes(d.getMinutes() + n),
+  hours: (d, n) => d.setHours(d.getHours() + n),
+  days: (d, n) => d.setDate(d.getDate() + n),
+  months: (d, n) => d.setMonth(d.getMonth() + n),
+  years: (d, n) => d.setFullYear(d.getFullYear() + n),
+};
+
 function buildDate(date) {
   const ret = {
     format(f) {
@@ -52,17 +61,15 @@ function buildDate(date) {
       return valueOfSelf >= valueOfObjFrom && valueOfSelf <= valueOfObjTo;
     },
     add(qty, timePeriod = 'days') {
-      if (timePeriod === 'minutes') {
-        this._date.setMinutes(this._date.getMinutes() + qty);
+      if (!this.isValid() || !timeStrategyAdd[timePeriod]) {
+        return this;
       }
-      if (timePeriod === 'hours') {
-        this._date.setHours(this._date.getHours() + qty);
-      }
-      if (timePeriod === 'days') {
-        this._date.setDate(this._date.getDate() + qty);
-      }
+      timeStrategyAdd[timePeriod](this._date, qty);
       this.numberDate = this._date.valueOf();
       return this;
+    },
+    subtract(qty, timePeriod = 'days') {
+      return this.add(qty * -1, timePeriod);
     },
     valueOf() {
       return this.numberDate;

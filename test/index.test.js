@@ -176,6 +176,32 @@ describe('Moment instance "add" method', () => {
     expect(momentInstanceAddHour._date.getHours()).to.be.equal(momentInstance3._date.getHours());
   });
 });
+describe('Moment instance "subtract" method', () => {
+  const momentInstance0 = moment();
+  const momentInstance1 = moment(momentInstance0._date.valueOf());
+  const momentInstance2 = moment();
+  const momentInstance3 = moment();
+  const momentInstanceAddDay = moment(momentInstance1._date).subtract(1, 'days');
+  const momentInstanceAddMinutes = moment(momentInstance2._date).subtract(1, 'minutes');
+  const momentInstanceAddHour = moment(momentInstance3._date).subtract(1, 'hours');
+  momentInstance1._date.setDate(momentInstance1._date.getDate() - 1);
+  momentInstance2._date.setMinutes(momentInstance2._date.getMinutes() - 1);
+  momentInstance3._date.setHours(momentInstance3._date.getHours() - 1);
+
+  it('should be true for different dates "valueOf" value', () => {
+    expect(momentInstance0.valueOf()).to.not.be.equal(momentInstanceAddDay.valueOf());
+  });
+  it('should be true when subtracting 1 day', () => {
+    expect(momentInstanceAddDay._date.getDate()).to.be.equal(momentInstance1._date.getDate());
+  });
+  it('should be true when subtracting 1 minute', () => {
+    expect(momentInstanceAddMinutes._date.getMinutes())
+      .to.be.equal(momentInstance2._date.getMinutes());
+  });
+  it('should be true when subtracting 1 hour', () => {
+    expect(momentInstanceAddHour._date.getHours()).to.be.equal(momentInstance3._date.getHours());
+  });
+});
 describe('Moment instance "isBefore" method', () => {
   const momentInstance = moment();
   const momentInstanceBefore = moment('2019-03-04', 'YYYY-MM-DD');

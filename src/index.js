@@ -140,22 +140,26 @@ function buildDate(date) {
 function momentMini(date, format = null) {
   if (date === false) {
     return buildDate(false);
-  } else if (date === null) {
+  }
+  if (date === null) {
     return buildDate(new Date());
   }
   // caso date = any, fotmat
   if (format && format instanceof Array) {
     return buildDate(format.find(f => fecha.parse(date, f)));
-  } else if (format) {
+  }
+  if (format) {
     return buildDate(fecha.parse((date || '').toString(), format));
-  } else if (Object.prototype.toString.call(date) === '[object Date]') {
+  }
+  if (Object.prototype.toString.call(date) === '[object Date]') {
     return buildDate(date);
-  } else if (typeof date === 'object') {
+  }
+  if (typeof date === 'object') {
     return buildDate(new Date(date.valueOf()));
-  } else if (typeof date === 'number') {
+  }
+  if (typeof date === 'number') {
     return buildDate(new Date(date * 1000));
   }
-
   const dateObj = new Date();
   return buildDate(dateObj);
 }

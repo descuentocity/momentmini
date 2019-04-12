@@ -1,6 +1,7 @@
 import json from 'rollup-plugin-json';
+import babel from 'rollup-plugin-babel';
 import commonjs from 'rollup-plugin-commonjs';
-import uglify from 'rollup-plugin-uglify';
+import { uglify } from 'rollup-plugin-uglify';
 import resolve from 'rollup-plugin-node-resolve';
 
 const pkg = require('./package.json');
@@ -22,7 +23,11 @@ export default {
       include: 'node_modules/**',
     }),
     json(),
-    (process.env.NODE_ENV === 'production' && uglify()),
+    babel({
+      exclude: 'node_modules/**',
+      runtimeHelpers: true,
+    }),
+    uglify(),
   ],
   external: Object.keys(pkg.dependencies),
 };

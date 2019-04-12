@@ -6,6 +6,13 @@ import oldmoment from './old';
 
 const { expect } = chai;
 
+describe('New fecha version compatibility', () => {
+  const momentInstance = moment('2019-09-10T12:05:00', 'YYYY-MM-DD[T]HH:mm:ss');
+  it('year should be 2019', () => {
+    expect(momentInstance.format('YYYY')).to.be.equal('2019');
+  });
+});
+
 describe('Moment instance without constructor', () => {
   const momentInstance = moment();
   it('should not be undefined', () => {

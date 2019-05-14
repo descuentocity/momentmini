@@ -146,10 +146,10 @@ function momentMini(date, format = null) {
   }
   // caso date = any, fotmat
   if (format && format instanceof Array) {
-    return buildDate(format.find(f => fecha.parse(date, f.replace('[T]', 'T'))));
+    return buildDate(format.find(f => fecha.parse(date, f)));
   }
   if (format) {
-    return buildDate(fecha.parse((date || '').toString(), format.replace('[T]', 'T')));
+    return buildDate(fecha.parse((date || '').toString(), format));
   }
   if (Object.prototype.toString.call(date) === '[object Date]') {
     return buildDate(date);

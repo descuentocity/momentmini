@@ -308,3 +308,11 @@ describe('Moment instance "diff" method', () => {
     expect(momentInstance.diff(momentInstanceAfter, 'days')).to.be.equal(1);
   });
 });
+
+describe('[T] bug fixed', () => {
+  const date = '2019-05-26T00:00:00';
+  const momentInstance = moment(date, 'YYYY-MM-DD');
+  it.only('date is correct', () => {
+    expect(momentInstance.format('YYYY-MM-DD')).to.be.equal('2019-05-26');
+  });
+});
